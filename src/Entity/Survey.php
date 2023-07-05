@@ -20,7 +20,7 @@ class Survey
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 255, enumType:SurveyStatus::class)]
+    #[ORM\Column(length: 255, enumType:SurveyStatus::class, options:["default" => SurveyStatus::EDIT])]
     private ?string $status = null;
 
     #[ORM\Column(nullable: true)]
