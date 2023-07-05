@@ -21,7 +21,7 @@ class Question
     #[ORM\Column(type: Types::TEXT)]
     private ?string $content = null;
 
-    #[ORM\Column(length: 255, enumType:QuestionType::class)]
+    #[ORM\Column(length: 255, enumType:QuestionType::class, options:["default" => QuestionType::SINGLE])]
     private ?string $type = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
