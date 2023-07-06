@@ -1,13 +1,14 @@
 controllers:
-    resource:
-        path: ../src/Controller/
-        namespace: App\Controller
-    type: attribute
+  resource:
+    path: ../src/Controller/Web
+    namespace: App\Controller\Web
+  type: attribute
+  name_prefix: 'web.'
 
 api:
-    resource:
-        path: ../src/Controller/Api
-        namespace: App\Controller\Api
-    type: attribute
-    prefix: '/api/v1'
-    name_prefix: 'api_v1_'
+  resource:
+    path: ../src/Controller/Api
+    namespace: App\Controller\Api
+  type: attribute
+  prefix: '/api/v1'
+  name_prefix: 'api.v1.'

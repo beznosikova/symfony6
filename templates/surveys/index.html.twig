@@ -1,0 +1,13 @@
+{# templates/surveys/index.html.twig #}
+<h1>Surveys</h1>
+<ul>
+    {% for survey in surveys %}
+        <li>
+            {{ survey.name|e }}
+            (BADANIE
+            EDYCJA
+            USUNIĘCIE
+            LISTA PYTAŃ)
+        </li>
+    {% endfor %}
+</ul>

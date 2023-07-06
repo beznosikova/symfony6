@@ -16,14 +16,14 @@ class SurveyController extends AbstractController
         return $this->json($survey);
     }
 
-    #[Route('survey-questions/{survey}', name: 'survey_questions', methods: ["GET"])]
+    #[Route('survey-questions/{survey}', name: 'survey.questions', methods: ["GET"])]
     public function showQuestions(Survey $survey): JsonResponse
     {
         $questions = $survey->getQuestions();
         return $this->json($questions);
     }
 
-    #[Route('survey-questions-options/{survey}/{question}', name: 'survey_questions_options', methods: ["GET"])]
+    #[Route('survey-questions-options/{survey}/{question}', name: 'survey.questions.options', methods: ["GET"])]
     public function showOptions(Survey $survey, Question $question): JsonResponse
     {
         $options = $question->getOptions();
