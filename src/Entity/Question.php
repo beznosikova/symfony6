@@ -8,6 +8,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Context;
+use Symfony\Component\Serializer\Annotation\Ignore;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 #[ORM\Entity(repositoryClass: QuestionRepository::class)]
 class Question
@@ -23,19 +26,23 @@ class Question
     #[ORM\Column(type: Types::TEXT)]
     private ?string $content = null;
 
-    #[ORM\Column(length: 255, enumType:QuestionType::class, options:["default" => QuestionType::SINGLE])]
-    private ?string $type = null;
+    #[ORM\Column(length: 255, enumType: QuestionType::class, options: ["default" => QuestionType::SINGLE])]
+    private ?QuestionType $type = null;
 
+    #[Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d H:i:s'])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $create_at = null;
+    private ?\DateTimeInterface $createAt = null;
 
+    #[Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d H:i:s'])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $updated_at = null;
+    private ?\DateTimeInterface $updatedAt = null;
 
+    #[Ignore]
     #[ORM\ManyToOne(inversedBy: 'questions')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Survey $survey = null;
 
+    #[Ignore]
     #[ORM\OneToMany(mappedBy: 'question', targetEntity: Option::class, orphanRemoval: true)]
     private Collection $options;
 
@@ -75,7 +82,7 @@ class Question
 
     public function getType(): ?string
     {
-        return $this->type;
+        return $this->type->text();
     }
 
     public function setType(string $type): static
@@ -87,24 +94,24 @@ class Question
 
     public function getCreateAt(): ?\DateTimeInterface
     {
-        return $this->create_at;
+        return $this->createAt;
     }
 
-    public function setCreateAt(?\DateTimeInterface $create_at): static
+    public function setCreateAt(?\DateTimeInterface $createAt): static
     {
-        $this->create_at = $create_at;
+        $this->createAt = $createAt;
 
         return $this;
     }
 
     public function getUpdatedAt(): ?\DateTimeInterface
     {
-        return $this->updated_at;
+        return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?\DateTimeInterface $updated_at): static
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): static
     {
-        $this->updated_at = $updated_at;
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }

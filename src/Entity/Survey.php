@@ -8,6 +8,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Context;
+use Symfony\Component\Serializer\Annotation\Ignore;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 #[ORM\Entity(repositoryClass: SurveyRepository::class)]
 class Survey
@@ -20,16 +23,21 @@ class Survey
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 255, enumType:SurveyStatus::class, options:["default" => SurveyStatus::EDIT])]
-    private ?string $status = null;
+    #[ORM\Column(length: 255, enumType: SurveyStatus::class, options: ["default" => SurveyStatus::EDIT])]
+// TODO: how customize enum value
+    private ?SurveyStatus $status = null;
 
     #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $created_at = null;
+    #[Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d H:i:s'])]
+    private ?\DateTimeImmutable $createdAt = null;
 
+    #[Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d H:i:s'])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $updated_at = null;
+    private ?\DateTimeInterface $updatedAt = null;
 
+    #[Ignore]
     #[ORM\OneToMany(mappedBy: 'survey', targetEntity: Question::class, orphanRemoval: true)]
+    #[ORM\OrderBy(['position' => 'ASC'])]
     private Collection $questions;
 
     public function __construct()
@@ -56,10 +64,11 @@ class Survey
 
     public function getStatus(): ?string
     {
-        return $this->status;
+        // TODO: how customize enum value
+        return $this->status->text();
     }
 
-    public function setStatus(string $status): static
+    public function setStatus(SurveyStatus $status): static
     {
         $this->status = $status;
 
@@ -68,24 +77,24 @@ class Survey
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
-    public function setCreatedAt(?\DateTimeImmutable $created_at): static
+    public function setCreatedAt(?\DateTimeImmutable $createdAt): static
     {
-        $this->created_at = $created_at;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
     public function getUpdatedAt(): ?\DateTimeInterface
     {
-        return $this->updated_at;
+        return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?\DateTimeInterface $updated_at): static
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): static
     {
-        $this->updated_at = $updated_at;
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }

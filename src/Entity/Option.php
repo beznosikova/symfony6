@@ -5,6 +5,9 @@ namespace App\Entity;
 use App\Repository\OptionRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Context;
+use Symfony\Component\Serializer\Annotation\Ignore;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 #[ORM\Entity(repositoryClass: OptionRepository::class)]
 #[ORM\Table(name: '`option`')]
@@ -22,17 +25,20 @@ class Option
     private ?string $content = null;
 
     #[ORM\Column]
-    private ?bool $is_valid = null;
+    private ?bool $isValid = null;
 
+    #[Ignore]
     #[ORM\ManyToOne(inversedBy: 'options')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Question $question = null;
 
+    #[Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d H:i:s'])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $created_at = null;
+    private ?\DateTimeInterface $createdAt = null;
 
+    #[Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d H:i:s'])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $updated_at = null;
+    private ?\DateTimeInterface $updatedAt = null;
 
     public function getId(): ?int
     {
@@ -65,12 +71,12 @@ class Option
 
     public function isIsValid(): ?bool
     {
-        return $this->is_valid;
+        return $this->isValid;
     }
 
-    public function setIsValid(bool $is_valid): static
+    public function setIsValid(bool $isValid): static
     {
-        $this->is_valid = $is_valid;
+        $this->isValid = $isValid;
 
         return $this;
     }
@@ -89,24 +95,24 @@ class Option
 
     public function getCreatedAt(): ?\DateTimeInterface
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
-    public function setCreatedAt(?\DateTimeInterface $created_at): static
+    public function setCreatedAt(?\DateTimeInterface $createdAt): static
     {
-        $this->created_at = $created_at;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
     public function getUpdatedAt(): ?\DateTimeInterface
     {
-        return $this->updated_at;
+        return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?\DateTimeInterface $updated_at): static
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): static
     {
-        $this->updated_at = $updated_at;
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
