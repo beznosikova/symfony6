@@ -5,13 +5,15 @@ namespace App\Entity;
 use App\Repository\OptionRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+
+//use JsonSerializable;
 use Symfony\Component\Serializer\Annotation\Context;
 use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 #[ORM\Entity(repositoryClass: OptionRepository::class)]
 #[ORM\Table(name: '`option`')]
-class Option
+class Option// implements JsonSerializable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -116,4 +118,12 @@ class Option
 
         return $this;
     }
+
+//    public function jsonSerialize()
+//    {
+//        return array(
+//            'value' => $this->value,
+//            'content' => $this->content,
+//        );
+//    }
 }
