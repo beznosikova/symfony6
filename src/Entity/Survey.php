@@ -24,7 +24,6 @@ class Survey
     private ?string $name = null;
 
     #[ORM\Column(length: 255, enumType: SurveyStatus::class, options: ["default" => SurveyStatus::EDIT])]
-// TODO: how customize enum value
     private ?SurveyStatus $status = null;
 
     #[ORM\Column(nullable: true)]
@@ -43,6 +42,7 @@ class Survey
     public function __construct()
     {
         $this->questions = new ArrayCollection();
+        $this->status = SurveyStatus::EDIT;
     }
 
     public function getId(): ?int
