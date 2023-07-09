@@ -78,7 +78,7 @@ class SurveyController extends AbstractController
 //        return redirect(route('survey.questions', compact('survey')));
     }
 
-    #[Route('/survey/{survey}', name: 'survey.delete', methods: ['DELETE', 'POST'])]
+    #[Route('/survey/{survey}', name: 'survey.delete', methods: ['DELETE'])]
     public function destroy(Survey $survey, SurveyRepository $surveyRepository): RedirectResponse
     {
         $surveyRepository->remove($survey, true);
