@@ -58,7 +58,7 @@ class SurveyController extends AbstractController
 //        return view('survey.forms.edit', compact('survey', 'statuses'));
     }
 
-    #[Route('/survey/edit/{survey}', name: 'survey.edit', methods: ['PUT'])]
+    #[Route('/survey/edit/{survey}', name: 'survey.update', methods: ['PUT'])]
 //    public function update(Survey $survey, SurveyUpdateRequest $request): RedirectResponse
     public function update(
         Survey $survey
@@ -79,13 +79,16 @@ class SurveyController extends AbstractController
     }
 
     #[Route('/survey/{survey}', name: 'survey.delete', methods: ['DELETE'])]
-    public function destroy(Survey $survey, SurveyRepository $surveyRepository): RedirectResponse
+    public function destroy(Survey $survey, SurveyRepository $surveyRepository, Request $request): RedirectResponse
     {
-        $surveyRepository->remove($survey, true);
-        $this->addFlash(
-            'notice',
-            'Badanie zostało usunięte.'
-        );
+        $submittedToken = $request->request->get('token');
+
+        if ($this->isCsrfTokenValid('delete-survey', $submittedToken)) {
+            $surveyRepository->remove($survey, true);
+            $this->addFlash('notice', 'Badanie zostało usunięte.');
+        }
+        $this->addFlash('notice', 'Wystąpił probłem z usuniętitiem.');
+
         return $this->redirectToRoute('web.survey.index');
     }
 
