@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Context;
 use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SurveyRepository::class)]
 class Survey
@@ -21,6 +22,8 @@ class Survey
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 10)]
     private ?string $name = null;
 
     #[ORM\Column(length: 255, enumType: SurveyStatus::class, options: ["default" => SurveyStatus::EDIT])]
@@ -45,6 +48,22 @@ class Survey
         $this->status = SurveyStatus::EDIT;
     }
 
+    public function __toString(): string
+    {
+        return 'survey string';
+    }
+
+    public function inEdition(): bool
+    {
+        return true; // todo; add logic
+    }
+
+    public function getApiUrl(): string
+    {
+        return "/survey/show/$this->id";
+        // todo: use service with url generator
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -64,13 +83,14 @@ class Survey
 
     public function getStatus(): ?string
     {
-        // TODO: how customize enum value
+        return $this->status?->value;
+        // TODO: how customize enum value for API??
         return $this->status->text();
     }
 
-    public function setStatus(SurveyStatus $status): static
+    public function setStatus(?string $status): static
     {
-        $this->status = $status;
+        $this->status = SurveyStatus::tryFrom($status);
 
         return $this;
     }
@@ -80,9 +100,9 @@ class Survey
         return $this->createdAt;
     }
 
-    public function setCreatedAt(?\DateTimeImmutable $createdAt): static
+    public function setCreatedAt(): static
     {
-        $this->createdAt = $createdAt;
+        $this->createdAt = new \DateTimeImmutable();
 
         return $this;
     }

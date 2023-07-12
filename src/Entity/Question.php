@@ -49,6 +49,12 @@ class Question
     public function __construct()
     {
         $this->options = new ArrayCollection();
+        $this->type = QuestionType::SINGLE;
+    }
+
+    public function __toString(): string
+    {
+        return 'question string';
     }
 
     public function getId(): ?int
@@ -82,7 +88,7 @@ class Question
 
     public function getType(): ?string
     {
-        return $this->type->text();
+        return $this->type?->value;
     }
 
     public function setType(string $type): static
