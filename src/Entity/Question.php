@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Context;
 use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
+use Symfony\Component\String\UnicodeString;
 
 #[ORM\Entity(repositoryClass: QuestionRepository::class)]
 class Question
@@ -54,7 +55,7 @@ class Question
 
     public function __toString(): string
     {
-        return 'question string';
+        return (new UnicodeString($this->content))->truncate(20, '…', false);
     }
 
     public function getId(): ?int
