@@ -50,12 +50,12 @@ class Survey
 
     public function __toString(): string
     {
-        return 'survey string';
+        return $this->name;
     }
 
     public function inEdition(): bool
     {
-        return true; // todo; add logic
+        return $this->status === SurveyStatus::EDIT;
     }
 
     public function getApiUrl(): string

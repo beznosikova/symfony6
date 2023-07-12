@@ -6,6 +6,7 @@ use App\Entity\Survey;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
@@ -34,12 +35,11 @@ class SurveyCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        return [
-            TextField::new('name'),
-            ChoiceField::new('status'),
-            UrlField::new('apiUrl')->onlyOnIndex(),
-            DateTimeField::new('createdAt')->onlyOnIndex(),
-            DateTimeField::new('updatedAt')->onlyOnIndex(),
-        ];
+        yield TextField::new('name');
+        yield ChoiceField::new('status');
+        yield UrlField::new('apiUrl')->onlyOnIndex();
+//        yield AssociationField::new('questions');
+        yield DateTimeField::new('createdAt')->onlyOnIndex();
+        yield DateTimeField::new('updatedAt')->onlyOnIndex();
     }
 }
