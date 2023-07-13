@@ -14,6 +14,7 @@ use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\String\UnicodeString;
 
 #[ORM\Entity(repositoryClass: QuestionRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Question
 {
     #[ORM\Id]
@@ -32,7 +33,7 @@ class Question
 
     #[Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d H:i:s'])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $createAt = null;
+    private ?\DateTimeInterface $createdAt = null;
 
     #[Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d H:i:s'])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
@@ -99,16 +100,15 @@ class Question
         return $this;
     }
 
-    public function getCreateAt(): ?\DateTimeInterface
+    public function getCreatedAt(): ?\DateTimeInterface
     {
-        return $this->createAt;
+        return $this->createdAt;
     }
 
-    public function setCreateAt(?\DateTimeInterface $createAt): static
+    #[ORM\PrePersist]
+    public function setCreatedAt(): void
     {
-        $this->createAt = $createAt;
-
-        return $this;
+        $this->createdAt = new \DateTimeImmutable();
     }
 
     public function getUpdatedAt(): ?\DateTimeInterface
@@ -116,12 +116,12 @@ class Question
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?\DateTimeInterface $updatedAt): static
+    #[ORM\PreUpdate]
+    public function setUpdatedAt(): void
     {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
+        $this->updatedAt = new \DateTimeImmutable();
     }
+
 
     public function getSurvey(): ?Survey
     {

@@ -14,6 +14,7 @@ use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SurveyRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Survey
 {
     #[ORM\Id]
@@ -100,11 +101,10 @@ class Survey
         return $this->createdAt;
     }
 
-    public function setCreatedAt(): static
+    #[ORM\PrePersist]
+    public function setCreatedAt(): void
     {
         $this->createdAt = new \DateTimeImmutable();
-
-        return $this;
     }
 
     public function getUpdatedAt(): ?\DateTimeInterface
@@ -112,11 +112,10 @@ class Survey
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?\DateTimeInterface $updatedAt): static
+    #[ORM\PreUpdate]
+    public function setUpdatedAt(): void
     {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
+        $this->updatedAt = new \DateTimeImmutable();
     }
 
     /**
