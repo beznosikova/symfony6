@@ -1,31 +1,36 @@
-{# templates/survey/index.html.twig #}
-<div>
-    <h1>Surveys</h1>
-    <h3><a href="{{ path('web.survey.create') }}">Nowe badanie</a></h3>
-</div>
-{% for message in app.flashes('notice') %}
-    <div class="">
-        {{ message }}
+{% extends 'base.html.twig' %}
+
+{% block title %}Survey list{% endblock %}
+
+{% block body %}
+    <div>
+        <h1>Surveys</h1>
+        <h3><a href="{{ path('web.survey.create') }}">Nowe badanie</a></h3>
     </div>
-{% endfor %}
-<div>
-    <ul>
-        {% for survey in surveys %}
-            <li>
-                {{ survey.name|e }}
-                (
-                <a href="{{ path('web.survey.show', {'survey': survey.getId()}) }}">BADANIE</a>
-                <a href="{{ path('web.survey.edit', {'survey': survey.getId()}) }}">EDYCJA</a>
+    {% for message in app.flashes('notice') %}
+        <div class="">
+            {{ message }}
+        </div>
+    {% endfor %}
+    <div>
+        <ul>
+            {% for survey in surveys %}
+                <li>
+                    {{ survey.name|e }}
+                    (
+                    <a href="{{ path('web.survey.show', {'survey': survey.getId()}) }}">BADANIE</a>
+                    <a href="{{ path('web.survey.edit', {'survey': survey.getId()}) }}">EDYCJA</a>
 
-                <a href="{{ path('web.survey.index') }}">LISTA PYTAŃ</a>
-                )
-                <form action="{{ path('web.survey.delete', {'survey': survey.getId()}) }}" method="post">
-                    <input type="hidden" name="token" value="{{ csrf_token('delete-survey') }}"/>
-                    <input type="hidden" name="_method" value="DELETE"/>
-                    <button type="submit">USUNIĘCIE</button>
-                </form>
-            </li>
-        {% endfor %}
-    </ul>
-</div>
+                    <a href="{{ path('web.survey.index') }}">LISTA PYTAŃ</a>
+                    )
+                    <form action="{{ path('web.survey.delete', {'survey': survey.getId()}) }}" method="post">
+                        <input type="hidden" name="token" value="{{ csrf_token('delete-survey') }}"/>
+                        <input type="hidden" name="_method" value="DELETE"/>
+                        <button type="submit">USUNIĘCIE</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
 
+{% endblock %}

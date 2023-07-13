@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Survey {% endblock %}
+
+{% block body %}
+    <div>
+        <h1>Survey - {{ survey }}</h1>
+        <small>{{ survey.createdAt|format_datetime('medium', 'short') }}</small>
+        <h3><a href="{{ path('web.survey.index') }}">Back to List</a></h3>
+    </div>
+
+    {% if questions|length > 0 %}
+        {{ include('survey/parts/questions.html.twig') }}
+    {% else %}
+        <div>No questions.</div>
+    {% endif %}
+
+{% endblock %}

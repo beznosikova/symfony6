@@ -1,0 +1,22 @@
+{% block questions %}
+    <div>There are {{ questions|length }} questions.</div>
+
+    {% for question in questions %}
+        <hr>
+        <h4>{{ question.content }}</h4>
+        <small>
+            {{ question.createAt|format_datetime('medium', 'short') }}
+        </small>
+
+        <p>{{ question.type }}</p>
+        {#      todo:      question options #}
+    {% endfor %}
+
+    {% if previous >= 0 %}
+        <a href="{{ path('web.survey.show', { survey: survey.id, offset: previous }) }}">Previous</a>
+    {% endif %}
+    {% if next < questions|length %}
+        <a href="{{ path('web.survey.show', { survey: survey.id, offset: next }) }}">Next</a>
+    {% endif %}
+
+{% endblock %}

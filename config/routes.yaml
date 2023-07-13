@@ -4,11 +4,3 @@ controllers:
     namespace: App\Controller\Web
   type: attribute
   name_prefix: 'web.'
-
-api:
-  resource:
-    path: ../src/Controller/Api
-    namespace: App\Controller\Api
-  type: attribute
-  prefix: '/api/v1'
-  name_prefix: 'api.v1.'
