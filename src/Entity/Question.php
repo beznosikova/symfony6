@@ -94,7 +94,7 @@ class Question
 
     public function setType(string $type): static
     {
-        $this->type = $type;
+        $this->type = QuestionType::tryFrom($type);
 
         return $this;
     }
@@ -163,5 +163,10 @@ class Question
         }
 
         return $this;
+    }
+
+    public function getIsSingle(): ?bool
+    {
+        return $this->type === QuestionType::SINGLE;
     }
 }

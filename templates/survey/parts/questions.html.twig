@@ -7,9 +7,11 @@
         <small>
             {{ question.createAt|format_datetime('medium', 'short') }}
         </small>
-
-        <p>{{ question.type }}</p>
-        {#      todo:      question options #}
+        {% if question.options|length > 0 %}
+            {{ include('survey/parts/options.html.twig') }}
+        {% else %}
+            <div>No options.</div>
+        {% endif %}
     {% endfor %}
 
     {% if previous >= 0 %}
