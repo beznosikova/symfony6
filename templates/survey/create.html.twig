@@ -1,5 +1,8 @@
-{# templates/survey/index.html.twig #}
-<h1>Tworzenie badania</h1>
-<div>
-    {{ form(form) }}
-</div>
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Tworzenie badania</h1>
+    <div>
+        {{ form(form) }}
+    </div>
+{% endblock %}
