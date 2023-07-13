@@ -8,13 +8,16 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Context;
 use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SurveyRepository::class)]
 #[ORM\HasLifecycleCallbacks]
+#[UniqueEntity('slug')]
 class Survey
 {
     #[ORM\Id]
@@ -43,6 +46,9 @@ class Survey
     #[ORM\OrderBy(['position' => 'ASC'])]
     private Collection $questions;
 
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
+    private ?string $slug = null;
+
     public function __construct()
     {
         $this->questions = new ArrayCollection();
@@ -61,7 +67,7 @@ class Survey
 
     public function getApiUrl(): string
     {
-        return "/survey/show/$this->id";
+        return "/survey/show/$this->slug";
         // todo: use service with url generator
     }
 
@@ -146,5 +152,22 @@ class Survey
         }
 
         return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): static
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function computeSlug(SluggerInterface $slugger)
+    {
+        $this->slug = (string)$slugger->slug((string)$this)->lower()->truncate(15);
     }
 }

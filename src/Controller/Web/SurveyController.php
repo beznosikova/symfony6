@@ -41,7 +41,7 @@ class SurveyController extends AbstractController
         ]);
     }
 
-    #[Route('/survey/edit/{survey}', name: 'survey.edit', methods: ['GET', 'HEAD'])]
+    #[Route('/survey/edit/{slug}', name: 'survey.edit', methods: ['GET', 'HEAD'])]
     public function edit(Survey $survey)//: View
     {
         dd('survey.edit', $survey);
@@ -50,7 +50,7 @@ class SurveyController extends AbstractController
 //        return view('survey.forms.edit', compact('survey', 'statuses'));
     }
 
-    #[Route('/survey/edit/{survey}', name: 'survey.update', methods: ['PUT'])]
+    #[Route('/survey/edit/{slug}', name: 'survey.update', methods: ['PUT'])]
 //    public function update(Survey $survey, SurveyUpdateRequest $request): RedirectResponse
     public function update(
         Survey $survey
@@ -70,7 +70,7 @@ class SurveyController extends AbstractController
 //        return redirect(route('survey.questions', compact('survey')));
     }
 
-    #[Route('/survey/{survey}', name: 'survey.delete', methods: ['DELETE'])]
+    #[Route('/survey/{slug}', name: 'survey.delete', methods: ['DELETE'])]
     public function destroy(Survey $survey, SurveyRepository $surveyRepository, Request $request): RedirectResponse
     {
         $submittedToken = $request->request->get('token');
@@ -85,7 +85,7 @@ class SurveyController extends AbstractController
         return $this->redirectToRoute('web.survey.index');
     }
 
-    #[Route('/survey/show/{survey}', name: 'survey.show', methods: ['GET', 'HEAD'])]
+    #[Route('/survey/show/{slug}', name: 'survey.show', methods: ['GET', 'HEAD'])]
     public function show(Survey $survey, Request $request, QuestionRepository $questionRepository): Response
     {
         if ($survey->inEdition()) {

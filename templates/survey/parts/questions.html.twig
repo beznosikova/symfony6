@@ -5,7 +5,7 @@
         <hr>
         <h4>{{ question.content }}</h4>
         <small>
-            {{ question.createAt|format_datetime('medium', 'short') }}
+            {{ question.createdAt|format_datetime('medium', 'short') }}
         </small>
         {% if question.options|length > 0 %}
             {{ include('survey/parts/options.html.twig') }}

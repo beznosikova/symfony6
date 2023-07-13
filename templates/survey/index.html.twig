@@ -18,12 +18,12 @@
                 <li>
                     {{ survey.name|e }}
                     (
-                    <a href="{{ path('web.survey.show', {'survey': survey.getId()}) }}">BADANIE</a>
-                    <a href="{{ path('web.survey.edit', {'survey': survey.getId()}) }}">EDYCJA</a>
+                    <a href="{{ path('web.survey.show', {slug: survey.slug}) }}">BADANIE</a>
+                    <a href="{{ path('web.survey.edit', {slug: survey.slug}) }}">EDYCJA</a>
 
                     <a href="{{ path('web.survey.index') }}">LISTA PYTAŃ</a>
                     )
-                    <form action="{{ path('web.survey.delete', {'survey': survey.getId()}) }}" method="post">
+                    <form action="{{ path('web.survey.delete', {slug: survey.slug}) }}" method="post">
                         <input type="hidden" name="token" value="{{ csrf_token('delete-survey') }}"/>
                         <input type="hidden" name="_method" value="DELETE"/>
                         <button type="submit">USUNIĘCIE</button>

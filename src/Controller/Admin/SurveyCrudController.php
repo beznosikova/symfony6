@@ -36,6 +36,7 @@ class SurveyCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         yield TextField::new('name');
+        yield TextField::new('slug')->onlyOnIndex();
         yield ChoiceField::new('status');
         yield UrlField::new('apiUrl')->onlyOnIndex();
         yield AssociationField::new('questions');
