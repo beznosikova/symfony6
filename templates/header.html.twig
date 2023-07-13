@@ -1,0 +1,9 @@
+<header>
+    <h1><a href="{{ path('web.survey.index') }}">Guestbook</a></h1>
+    <ul>
+        {% for survey in surveys %}
+            <li><a href="{{ path('web.survey.show', { survey: survey.id }) }}">{{ survey }}</a></li>
+        {% endfor %}
+    </ul>
+    <hr/>
+</header>

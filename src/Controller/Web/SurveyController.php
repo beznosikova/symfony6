@@ -12,16 +12,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class SurveyController extends AbstractController
 {
     #[Route('/', name: 'survey.index', methods: ['GET', 'HEAD'])]
-    public function index(SurveyRepository $surveyRepository): Response
+    public function index(): Response
     {
-        return $this->render('survey/index.html.twig', [
-            'surveys' => $surveyRepository->findAll(),
-        ]);
+        return $this->render('survey/index.html.twig');
     }
 
     #[Route('/survey/create', name: 'survey.create', methods: ['GET', 'POST'])]
