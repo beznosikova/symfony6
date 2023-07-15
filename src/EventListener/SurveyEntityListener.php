@@ -13,19 +13,19 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class SurveyEntityListener
 {
     public function __construct(
-        private SluggerInterface $slugger,
+        private readonly SluggerInterface $slugger,
     ) {
     }
 
-    public function prePersist(Survey $conference, LifecycleEventArgs $event)
+    public function prePersist(Survey $survey, LifecycleEventArgs $event)
     {
-        $conference->computeSlug($this->slugger);
+        $survey->computeSlug($this->slugger);
     }
 
-    public function preUpdate(Survey $conference, LifecycleEventArgs $event)
+    public function preUpdate(Survey $survey, LifecycleEventArgs $event)
     {
         if ($event->hasChangedField('name')) {
-            $conference->computeSlug($this->slugger);
+            $survey->computeSlug($this->slugger);
         }
     }
 }

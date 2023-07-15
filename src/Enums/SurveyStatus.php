@@ -17,4 +17,8 @@ enum SurveyStatus: string
         };
     }
 
+    public static function choices(): array
+    {
+        return array_column(self::cases(), 'value', 'name');
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Validator as SurveyValidator;
 use App\Enums\SurveyStatus;
 use App\Repository\SurveyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -18,6 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: SurveyRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[UniqueEntity('slug')]
+#[SurveyValidator\SurveyStatus]
 class Survey
 {
     #[ORM\Id]
@@ -63,6 +65,11 @@ class Survey
     public function inEdition(): bool
     {
         return $this->status === SurveyStatus::EDIT;
+    }
+
+    public function isReady(): bool
+    {
+        return $this->status === SurveyStatus::READY;
     }
 
     public function getApiUrl(): string
@@ -119,6 +126,7 @@ class Survey
     }
 
     #[ORM\PreUpdate]
+    #[ORM\PrePersist]
     public function setUpdatedAt(): void
     {
         $this->updatedAt = new \DateTimeImmutable();

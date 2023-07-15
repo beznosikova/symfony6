@@ -3,6 +3,7 @@
 namespace App\Controller\Web;
 
 use App\Entity\Survey;
+use App\Form\SurveyEditType;
 use App\Form\SurveyType;
 use App\Repository\QuestionRepository;
 use App\Repository\SurveyRepository;
@@ -22,7 +23,7 @@ class SurveyController extends AbstractController
     }
 
     #[Route('/survey/create', name: 'survey.create', methods: ['GET', 'POST'])]
-    public function store(Request $request, SurveyRepository $surveyRepository): RedirectResponse|Response
+    public function store(Request $request, SurveyRepository $surveyRepository): Response
     {
         $survey = new Survey();
         $form = $this->createForm(SurveyType::class, $survey);
@@ -31,9 +32,8 @@ class SurveyController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $survey = $form->getData();
             $surveyRepository->save($survey, true);
-            // todo: add created_at and updated_at
 
-            return $this->redirectToRoute('web.survey.questions', ['survey' => $survey->getId()]);
+            return $this->redirectToRoute('web.survey.questions', ['survey' => $survey->getSlug()]);
         }
 
         return $this->render('survey/create.html.twig', [
@@ -41,33 +41,20 @@ class SurveyController extends AbstractController
         ]);
     }
 
-    #[Route('/survey/edit/{slug}', name: 'survey.edit', methods: ['GET', 'HEAD'])]
-    public function edit(Survey $survey)//: View
+    #[Route('/survey/edit/{slug}', name: 'survey.edit', methods: ['GET', 'PUT'])]
+    public function update(Request $request, Survey $survey, SurveyRepository $surveyRepository): Response
     {
-        dd('survey.edit', $survey);
-//        $statuses = SurveyStatus::cases();
-//
-//        return view('survey.forms.edit', compact('survey', 'statuses'));
-    }
+        $form = $this->createForm(SurveyEditType::class, $survey, ['method' => 'PUT']);
+        $form->handleRequest($request);
 
-    #[Route('/survey/edit/{slug}', name: 'survey.update', methods: ['PUT'])]
-//    public function update(Survey $survey, SurveyUpdateRequest $request): RedirectResponse
-    public function update(
-        Survey $survey
-    ): RedirectResponse {
-        dd('survey.update', $survey);
-//        $validated = $request->validated();
-//
-//        if ($survey->questions->isEmpty() && $request->status === SurveyStatus::READY->value) {
-//            return back()->withInput()->withErrors(
-//                ['status' => 'Statusu “Gotowe” nie można ustawić, badanie nie zawiera pytań']
-//            );
-//        }
-//
-//        $survey->fill($validated);
-//        $survey->save();
-//
-//        return redirect(route('survey.questions', compact('survey')));
+        if ($form->isSubmitted() && $form->isValid()) {
+            $survey = $form->getData();
+            $surveyRepository->save($survey, true);
+
+            return $this->redirectToRoute('web.survey.questions', ['slug' => $survey->getSlug()]);
+        }
+
+        return $this->render('survey/edit.html.twig', ['form' => $form,]);
     }
 
     #[Route('/survey/{slug}', name: 'survey.delete', methods: ['DELETE'])]

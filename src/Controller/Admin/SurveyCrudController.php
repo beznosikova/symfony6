@@ -39,7 +39,7 @@ class SurveyCrudController extends AbstractCrudController
         yield TextField::new('slug')->onlyOnIndex();
         yield ChoiceField::new('status');
         yield UrlField::new('apiUrl')->onlyOnIndex();
-        yield AssociationField::new('questions');
+        yield AssociationField::new('questions')->onlyOnIndex();
         yield DateTimeField::new('createdAt')->onlyOnIndex();
         yield DateTimeField::new('updatedAt')->onlyOnIndex();
     }
