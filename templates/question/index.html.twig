@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello QuestionController!{% endblock %}
+
+{% block body %}
+    <style>
+        .example-wrapper {
+            margin: 1em auto;
+            max-width: 800px;
+            width: 95%;
+            font: 18px/1.5 sans-serif;
+        }
+
+        .example-wrapper code {
+            background: #F5F5F5;
+            padding: 2px 6px;
+        }
+    </style>
+
+    <div class="example-wrapper">
+        <div>
+            <h1> ✅ {{ survey }}</h1>
+            <div><a href="{{ path('web.question.create', {slug: survey.slug}) }}">New question</a></div>
+        </div>
+        <div>
+            {% for message in app.flashes('notice') %}
+                <div class="">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+
+        <ul>
+            {% for question in survey.questions %}
+                <li>
+                    {{ question.content|e }}<br>
+                    {{ question.type|e }}
+                    (
+                    <a href="{{ path('web.question.edit', {slug: survey.slug, question: question.id}) }}">EDYCJA</a>
+
+                    <a href="{{ path('web.question.options', {slug: survey.slug, question: question.id}) }}">LISTA
+                        OPCII</a>
+                    )
+                    <form action="{{ path('web.question.delete', {slug: survey.slug, question: question.id}) }}"
+                          method="post">
+                        <input type="hidden" name="token" value="{{ csrf_token('delete-question') }}"/>
+                        <input type="hidden" name="_method" value="DELETE"/>
+                        <button type="submit">USUNIĘCIE</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

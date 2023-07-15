@@ -14,4 +14,9 @@ enum QuestionType: string
             self::MULTIPLE => 'Wielokrotnego wyboru',
         };
     }
+
+    public static function choices(): array
+    {
+        return array_column(self::cases(), 'value', 'name');
+    }
 }

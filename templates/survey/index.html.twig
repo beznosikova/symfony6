@@ -21,7 +21,7 @@
                     <a href="{{ path('web.survey.show', {slug: survey.slug}) }}">BADANIE</a>
                     <a href="{{ path('web.survey.edit', {slug: survey.slug}) }}">EDYCJA</a>
 
-                    <a href="{{ path('web.survey.index') }}">LISTA PYTAŃ</a>
+                    <a href="{{ path('web.survey.questions', {slug: survey.slug}) }}">LISTA PYTAŃ</a>
                     )
                     <form action="{{ path('web.survey.delete', {slug: survey.slug}) }}" method="post">
                         <input type="hidden" name="token" value="{{ csrf_token('delete-survey') }}"/>
